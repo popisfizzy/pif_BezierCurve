@@ -15,8 +15,8 @@ BezierCurve
 							    // transform. If this value is not null, then it's values are
 							    // what will be used to get new points.
 
-			// A cache of binomial coefficients. This is used during calls
-			// to the Curve() method and cleared afterwards.
+			// A cache of binomial coefficients. This is initialized during calls to methods
+			// that use the _Choose() method and then cleared out afterwards.
 			BinomialCache
 
 			// A cache of the most recent call to Curve(). This will be used on subsequent
@@ -33,7 +33,12 @@ BezierCurve
 		// The argument format is x0,y0 , x1,x1, ..., xN,yN.
 
 		if(args.len == 0)
-			throw EXCEPTION("Invalid argument format: Must provide either a list or an argument list of coordinate pairs.")
+#if !defined(PIF_NOPREFIX_GENERAL) && !defined(PIF_NOPREFIX_BEZIERCURVE)
+			throw new /pif_BezierCurve/InvalidConstructorArgumentFormatException
+#else
+			throw new /BezierCurve/InvalidConstructorArgumentFormatException
+#endif
+
 
 		var/list/Data
 
@@ -43,9 +48,17 @@ BezierCurve
 			Data = args
 
 		if(Data.len < 4)
-			throw EXCEPTION("Invalid data format: Must provde at least two points (four arguments) to the constructor.")
+#if !defined(PIF_NOPREFIX_GENERAL) && !defined(PIF_NOPREFIX_BEZIERCURVE)
+			throw new /pif_BezierCurve/InvalidArgumentDataTooFewPointsException
+#else
+			throw new /BezierCurve/InvalidArgumentDataTooFewPointsException
+#endif
 		if((Data.len % 2) != 0)
-			throw EXCEPTION("Invalid data format: N points require 2N coordinates.")
+#if !defined(PIF_NOPREFIX_GENERAL) && !defined(PIF_NOPREFIX_BEZIERCURVE)
+			throw new /pif_BezierCurve/InvalidArgumentDataOddNumberException
+#else
+			throw new /BezierCurve/InvalidArgumentDataOddNumberException
+#endif
 
 		Points = Data.Copy()
 
@@ -78,14 +91,19 @@ BezierCurve
 			return Points.len / 2
 
 		Smoothness(s_ = src.smoothness)
+			if(s_ != src.smoothness)
+				// We'll have to recompute the curve if the value has changed, so clear out the
+				// cache.
+				CurveCache = null
+
 			smoothness = s_
 			return smoothness
 
-		Curve(_smoothness = null)
+		Curve(_smoothness = src.smoothness)
 			// Generate a list of points that we will draw lines between, in order to plot the
 			// (approximated) Bezier curve.
 
-			if(!CurveCache)
+			if(!CurveCache || !_smoothness || (_smoothness != src.smoothness))
 
 				var
 					// This is where we'll be drawing the points from.
@@ -145,8 +163,10 @@ BezierCurve
 
 		ClearTransform()
 			// This clears out any current transform.
+
 			transform = null
 			TransformPointCache = null
+			CurveCache = null
 
 			return 1
 
@@ -162,7 +182,11 @@ BezierCurve
 					)
 
 				else
-					throw EXCEPTION("Invalid transformation data: Data must contain six data points of a DM matrix.")
+#if !defined(PIF_NOPREFIX_GENERAL) && !defined(PIF_NOPREFIX_BEZIERCURVE)
+					throw new /pif_BezierCurve/InvalidArgumentFormatException
+#else
+					throw new /BezierCurve/InvalidArgumentFormatException
+#endif
 
 			else if(args.len == 6)
 				M = new(
@@ -180,7 +204,11 @@ BezierCurve
 
 			else if(!istype(M))
 				// Otherwise, it's an unknown argument format.
-				throw EXCEPTION("Invalid or unknown argument format for transformation data.")
+#if !defined(PIF_NOPREFIX_GENERAL) && !defined(PIF_NOPREFIX_BEZIERCURVE)
+				throw new /pif_BezierCurve/InvalidArgumentFormatException
+#else
+				throw new /BezierCurve/InvalidArgumentFormatException
+#endif
 
 			// If transform is not set, we set it to M. Otherwise, we right-multiply transform by
 			// M to get the new matrix.
@@ -315,20 +343,15 @@ BezierCurve
 			else
 				return 0
 
-		ArcLength()
+		ArcLength(s_ = smoothness)
 			// Gives the approximate Euclidean length along the given Bézier curve, limited
 			// largely by the specified smoothness. This applies to the *transformed* Bézier
 			// curve if it is present, or otherwise the original.
 
-			var/list/Curve
-
-			if(!CurveCache)
-				Curve = Curve()
-			else
-				Curve = CurveCache
+			var/list/Curve = Curve(s_)
 
 			. = 0
-			for(var/i = 1, i < Curve.len, i += 2)
+			for(var/i = 1, i < (Curve.len-1), i += 2)
 				var
 					dx = Curve[i+2]-Curve[i  ]
 					dy = Curve[i+3]-Curve[i+1]

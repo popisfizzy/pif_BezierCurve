@@ -126,6 +126,15 @@ sample points for drawing. The library does not handle the actual drawing of thi
 
         Populates the /pif_BezierCurve object with the sample points.
 
+      Exceptions
+
+        - A /pif_BezierCurve/InvalidConstructorArgumentFormatException exception is thrown if no
+          argument is passed to the constructor.
+        - A /pif_BezierCurve/InvalidArgumentDataTooFewPointsException exception is thrown if the
+          provided argument data contains less than four data points.
+        - A /pif_BezierCurve/InvalidArgumentDataOddNumberException exception is thrown if the
+          provided argument data contains an odd number of data points.
+
     AddPoint()
     --------------------
 
@@ -141,6 +150,51 @@ sample points for drawing. The library does not handle the actual drawing of thi
       Returns.
 
         The new number of control points.
+
+    ArcLength()
+    --------------------
+
+      Arguments.
+
+        The number of points of smoothness, or no argument if using the default amount.
+
+      Returns.
+
+        The approximate Euclidean arclength of the Bézier curve, and the exact (up to floating point
+        precision) arclength of the approximated Bézier curve with the specified number of sample
+        points.
+
+    Bezier()
+    --------------------
+
+      Arguments.
+
+        A number ("time") in the range [0, 1].
+
+      Behavior.
+
+        Gives the value of the Bézier function at the specified time. That is, it gives the point on
+        the Bézier curve at the given time.
+
+      Returns.
+
+        A /list object, where the first element is the x coordinate and the second element is the
+        y coordinate.
+
+    ClearTransform()
+    --------------------
+
+      Arguments.
+
+        None.
+
+      Behavior.
+
+        Clears out any existing transformatinos applied to the Bézier curve.
+
+      Returns.
+
+        True.
 
     Close()
     --------------------
@@ -159,14 +213,29 @@ sample points for drawing. The library does not handle the actual drawing of thi
 
         True, if the point was added (meaning the curve was not already closed) and false otherwise.
 
+    Curvature()
+    --------------------
+
+      Arguments.
+
+        A value ("time") in the range [0, 1].
+
+      Behavior.
+
+        Computes the unsigned Euclidean curvature at the point specified. Intuitively, this measures how
+        "curvy" the Bézier curve is at the specified time, where a line has curvature 0.
+
+      Returns.
+
+        The curvature, generally a floating point number.
+
     Curve()
     --------------------
 
       Arguments.
 
-        * smoothness: An optional argument to superecede the default smoothness. This will not
-            change the pif_BezierCurve object's smoothness value, and is only used once per call to
-            Curve().
+        An optional argument to superecede the default smoothness. This will not change the
+        pif_BezierCurve object's smoothness value, and is only used once per call to Curve().
 
       Behavior.
 
@@ -179,6 +248,48 @@ sample points for drawing. The library does not handle the actual drawing of thi
         is the same as the first control point, and the last sample point is the same as the last
         control point. The odd terms are the x-coordinates of the sample points, and the even terms
         are the y-coordinates of the sample points.
+
+    Derivative()
+    --------------------
+
+      Arguments.
+
+        A value ("time") in the range [0, 1].
+
+      Behavior.
+
+        Computes the "pointwise parametric curvature" of the Bézier curve at specified time. That is,
+        it outputs a pair of numbers where the first is the derivative along the x coordinate and
+        the second is along the y coordinate. To get back to the "standard" two-dimensional parametric
+        derivative, one simply divides the second value by the first.
+
+      Returns.
+
+        A /list object, where the first element is the value of the derivative along the x axis and
+        the second element is the value of the derivative along the y axis.
+
+    Displacement()
+    --------------------
+
+      Arguments.
+
+        None.
+
+      Returns.
+
+        A pair of numbers, which is the vector displacement from the first point on the Bézier curve
+        to the last point.
+
+    Distance()
+    --------------------
+
+      Arguments.
+
+        None.
+
+      Returns.
+
+        A number, the Euclidean distance from the first point on the Bézier curve to the last point.
 
     FirstPoint()
     --------------------
@@ -197,12 +308,12 @@ sample points for drawing. The library does not handle the actual drawing of thi
 
       Arguments.
 
-        * p: An integer whose absolute value is between 1 and Length() (refer below for this
-            method). Positive values meaure from the first control point (i.e., p = 1 means the
-            first control point) while negative values measure from the last control point (i.e.,
-            p = -1 means the last control point.
-        * x: The x-coordinate of the control point to be added.
-        * y: The y-coordinate of the control point to be added.
+        1. An integer whose absolute value is between 1 and Length() (refer below for this method).
+           Positive values meaure from the first control point (i.e., p = 1 means the first control
+           point) while negative values measure from the last control point (i.e., p = -1 means the
+           last control point.
+        2. The x-coordinate of the control point to be added.
+        3. The y-coordinate of the control point to be added.
 
       Behavior.
 
@@ -240,12 +351,12 @@ sample points for drawing. The library does not handle the actual drawing of thi
 
       Arguments.
 
-        * p:  An integer whose absolute value is between 1 and Length() (refer below for this
-            method). Positive values meaure from the first control point (i.e., p = 1 means the
-            first control point) while negative values measure from the last control point (i.e.,
-            p = -1 means the last control point.
-        * dx: The amount to add to the x coordinate of the point at position p.
-        * dy: The amount to add to the y coordinate of the point as position p.
+        1. An integer whose absolute value is between 1 and Length() (refer below for this method).
+           Positive values meaure from the first control point (i.e., p = 1 means the first control
+           point) while negative values measure from the last control point (i.e., p = -1 means the
+           last control point).
+        2. The amount to add to the x coordinate of the point at position p.
+        3. The amount to add to the y coordinate of the point as position p.
 
       Behavior.
 
@@ -276,10 +387,10 @@ sample points for drawing. The library does not handle the actual drawing of thi
 
       Arguments.
 
-        * p: An integer whose absolute value is between 1 and Length() (refer below for this
-            method). Positive values meaure from the first control point (i.e., p = 1 means the
-            first control point) while negative values measure from the last control point (i.e.,
-            p = -1 means the last control point.
+        1: An integer whose absolute value is between 1 and Length() (refer below for this method).
+           Positive values meaure from the first control point (i.e., p = 1 means the first control
+           point) while negative values measure from the last control point (i.e., p = -1 means the
+           last control point.
 
       Returns.
 
@@ -291,10 +402,10 @@ sample points for drawing. The library does not handle the actual drawing of thi
 
       Arguments.
 
-        * p: An integer whose absolute value is between 1 and Length() (refer below for this
-            method). Positive values meaure from the first control point (i.e., p = 1 means the
-            first control point) while negative values measure from the last control point (i.e.,
-            p = -1 means the last control point.
+        An integer whose absolute value is between 1 and Length() (refer below for this method).
+        Positive values meaure from the first control point (i.e., p = 1 means the first control point)
+        while negative values measure from the last control point (i.e., p = -1 means the last control
+        point).
 
       Behavior.
 
@@ -309,7 +420,7 @@ sample points for drawing. The library does not handle the actual drawing of thi
 
       Arguments.
 
-        * s: The new "smoothness". Defaults to the current smoothness.
+        The new "smoothness". Defaults to the current smoothness.
 
       Behavior.
 
@@ -337,6 +448,11 @@ sample points for drawing. The library does not handle the actual drawing of thi
 
         True.
 
+      Exceptions.
+
+        - A /pif_BezierCurve/InvalidArgumentFormatException exception is thrown if the six data points
+          of a DM matrix are not included, or if the argument format is otherwise invalid.
+
   7. Release Notes
   ----------------------------------------------------
 
@@ -357,6 +473,7 @@ sample points for drawing. The library does not handle the actual drawing of thi
 
   - Released the code under the MIT License.
   - Added GitHub repo information.
+  - Updated documentation formatting and added details on exceptions.
 
   Version 1.0.20160413
 
