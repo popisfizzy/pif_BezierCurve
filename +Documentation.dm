@@ -1,7 +1,7 @@
 /**
  ** pif_BezierCurve
- **   Version: 1.1.2016##
- **   Release Date: MONTH DD, 2016
+ **   Version: 1.1.20160422
+ **   Release Date: April 22, 2016
  **
  ***************************************************************************************************
  ***************************************************************************************************
@@ -456,7 +456,7 @@ sample points for drawing. The library does not handle the actual drawing of thi
   7. Release Notes
   ----------------------------------------------------
 
-  Version 1.1.2016####
+  Version 1.1.20160422
 
   - Rewrote some code, changing the exact behavior of transformations but leaving this mostly-
     transparent to the end user.
