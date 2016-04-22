@@ -482,10 +482,10 @@ sample points for drawing. The library does not handle the actual drawing of thi
   8. To Do/Plans
   ----------------------------------------------------
 
-  * Implement curve drawing and color curve transformation, if and when DM gets native line
+  - Implement curve drawing and color curve transformation, if and when DM gets native line
     primitives.
 
-  * Implement an adaptive subclass, which selects more sample points from regions of the curve that
+  - Implement an adaptive subclass, which selects more sample points from regions of the curve that
     have a higher curvature. This would be more processor-intensive in selecting the points (it
     requires sampling more points and computing the derivatives to find the curvature) but it would
     be quicker to draw and likely look smoother with fewer sample points.

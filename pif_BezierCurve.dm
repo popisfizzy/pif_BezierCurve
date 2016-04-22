@@ -34,9 +34,9 @@ BezierCurve
 
 		if(args.len == 0)
 #if !defined(PIF_NOPREFIX_GENERAL) && !defined(PIF_NOPREFIX_BEZIERCURVE)
-			throw new /pif_BezierCurve/InvalidConstructorArgumentFormatException
+			throw new /pif_BezierCurve/InvalidConstructorArgumentFormatException(__FILE__, __LINE__)
 #else
-			throw new /BezierCurve/InvalidConstructorArgumentFormatException
+			throw new /BezierCurve/InvalidConstructorArgumentFormatException(__FILE__, __LINE__)
 #endif
 
 
@@ -49,15 +49,15 @@ BezierCurve
 
 		if(Data.len < 4)
 #if !defined(PIF_NOPREFIX_GENERAL) && !defined(PIF_NOPREFIX_BEZIERCURVE)
-			throw new /pif_BezierCurve/InvalidArgumentDataTooFewPointsException
+			throw new /pif_BezierCurve/InvalidArgumentDataTooFewPointsException(__FILE__, __LINE__)
 #else
-			throw new /BezierCurve/InvalidArgumentDataTooFewPointsException
+			throw new /BezierCurve/InvalidArgumentDataTooFewPointsException(__FILE__, __LINE__)
 #endif
 		if((Data.len % 2) != 0)
 #if !defined(PIF_NOPREFIX_GENERAL) && !defined(PIF_NOPREFIX_BEZIERCURVE)
-			throw new /pif_BezierCurve/InvalidArgumentDataOddNumberException
+			throw new /pif_BezierCurve/InvalidArgumentDataOddNumberException(__FILE__, __LINE__)
 #else
-			throw new /BezierCurve/InvalidArgumentDataOddNumberException
+			throw new /BezierCurve/InvalidArgumentDataOddNumberException(__FILE__, __LINE__)
 #endif
 
 		Points = Data.Copy()
@@ -183,9 +183,9 @@ BezierCurve
 
 				else
 #if !defined(PIF_NOPREFIX_GENERAL) && !defined(PIF_NOPREFIX_BEZIERCURVE)
-					throw new /pif_BezierCurve/InvalidArgumentFormatException
+					throw new /pif_BezierCurve/InvalidArgumentFormatException(__FILE__, __LINE__)
 #else
-					throw new /BezierCurve/InvalidArgumentFormatException
+					throw new /BezierCurve/InvalidArgumentFormatException(__FILE__, __LINE__)
 #endif
 
 			else if(args.len == 6)
@@ -205,9 +205,9 @@ BezierCurve
 			else if(!istype(M))
 				// Otherwise, it's an unknown argument format.
 #if !defined(PIF_NOPREFIX_GENERAL) && !defined(PIF_NOPREFIX_BEZIERCURVE)
-				throw new /pif_BezierCurve/InvalidArgumentFormatException
+				throw new /pif_BezierCurve/InvalidArgumentFormatException(__FILE__, __LINE__)
 #else
-				throw new /BezierCurve/InvalidArgumentFormatException
+				throw new /BezierCurve/InvalidArgumentFormatException(__FILE__, __LINE__)
 #endif
 
 			// If transform is not set, we set it to M. Otherwise, we right-multiply transform by
