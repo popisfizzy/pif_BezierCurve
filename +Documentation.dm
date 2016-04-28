@@ -9,19 +9,19 @@
 pif_BezierCurve is a library which implements a class to handle the generation of Bézier curve
 sample points for drawing. The library does not handle the actual drawing of this class.
 
- +---------------------------------------------------+
- |                                                   |
- |  Contents                                         |
- |  1. License                                       |
- |  2. GitHub Repository                             |
- |  3. Introduction                                  |
- |  4. Example                                       |
- |  5. Preprocessors                                 |
- |  6. The /pif_BezierCurve class                    |
- |  7. Release Notes                                 |
- |  8. To Do/Plans                                   |
- |                                                   |
- +---------------------------------------------------+
+ +---------------------------------+
+ |                                 |
+ |  Contents                       |
+ |  1. License                     |
+ |  2. GitHub Repository           |
+ |  3. Introduction                |
+ |  4. Example                     |
+ |  5. Preprocessors               |
+ |  6. The /pif_BezierCurve class  |
+ |  7. Release Notes               |
+ |  8. To Do/Plans                 |
+ |                                 |
+ +---------------------------------+
 
   1. License
   ----------------------------------------------------
